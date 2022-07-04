@@ -1,0 +1,9 @@
+.custom-modal-dark {
+    --bs-modal-bg: #272727;
+    --bs-modal-color: white;
+}
+
+.custom-modal-light {
+    --bs-modal-bg: white;
+    --bs-modal-color: black;
+}

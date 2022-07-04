@@ -1,0 +1,16 @@
+.custom-pagination-dark {
+    --bs-pagination-bg: #272727;
+    --bs-pagination-color: white;
+    --bs-pagination-active-bg: rgb(61, 120, 61);
+    --bs-pagination-active-border-color: rgb(147, 252, 147);
+}
+
+.custom-pagination-light {
+    --bs-pagination-bg: white;
+    --bs-pagination-color: black;
+    --bs-pagination-active-bg: rgb(61, 120, 61);
+    --bs-pagination-active-border-color: rgb(0, 83, 0);
+}
+
+li.active {
+}

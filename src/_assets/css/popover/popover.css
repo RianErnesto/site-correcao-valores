@@ -1,0 +1,17 @@
+.custom-popover-dark {
+    --bs-popover-border-color: black;
+    --bs-popover-header-bg: #272727;
+    --bs-popover-header-color: white;
+    --bs-popover-arrow-width: 0px;
+    --bs-popover-arrow-height: 0px;
+}
+
+.custom-popover-light {
+    --bs-popover-border-color: white;
+    --bs-popover-header-bg: white;
+    --bs-popover-header-color: black;
+    --bs-popover-bg: #272727;
+    --bs-popover-body-color: white;
+    --bs-popover-arrow-width: 0px;
+    --bs-popover-arrow-height: 0px;
+}
