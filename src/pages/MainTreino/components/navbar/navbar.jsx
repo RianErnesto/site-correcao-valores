@@ -12,6 +12,21 @@ function NavBar(props) {
     props.parentCallback(!isDark);
   }
 
+  function onChangeTab(e) {
+    console.log(e.currentTarget.textContent);
+    switch(e.currentTarget.textContent) {
+      case "Importar Planilha":
+        props.setActiveTab(e.currentTarget.textContent);
+        break;
+      case "Tabela Índices da Poupança":
+        props.setActiveTab(e.currentTarget.textContent);
+        break;
+      case "Sobre":
+        props.setActiveTab(e.currentTarget.textContent);
+        break;
+    }
+  }
+
   const titleNavBar = "Zenith Correção de Valores";
 
   return (
@@ -39,7 +54,7 @@ function NavBar(props) {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <NavBarItems isDark={isDark} />
+            <NavBarItems activeTab={props.activeTab} onChangeTab={onChangeTab} isDark={isDark} />
           </ul>
           <SliderDarkMode isDark={isDark} setIsDark={onTrigger} />
           <form className="d-flex" role="search">
@@ -70,26 +85,25 @@ function NavBarItems(props) {
     console.log(error);
   }
   ).finally(() => {
-    console.log('Finalizado');
   }
   );
 
   return (
     <>
       <li className="nav-item">
-        <NormalLink href="#" text="Importar Planilha" />
+        <NormalLink active={props.activeTab == "Importar Planilha"} onChangeTab={props.onChangeTab} href="#" text="Importar Planilha" />
       </li>
       <li className="nav-item">
-        <PopoverLink href="#" text="Ver índice atual da Poupança" isDark={props.isDark} indice={indice} />
+        <PopoverLink onChangeTab={props.onChangeTab}  href="#" text="Índice da Poupança" isDark={props.isDark} indice={indice} />
       </li>
       <li className="nav-item">
-        <NormalLink href="#" text="Ver Todos os Índices por data" />
+        <NormalLink active={props.activeTab == "Tabela Índices da Poupança"} onChangeTab={props.onChangeTab}  href="#" text="Tabela Índices da Poupança" />
       </li>
       <li className="nav-item">
-        <ModalLink href="#" text="Corrigir Valor" isDark={props.isDark}/>
+        <ModalLink onChangeTab={props.onChangeTab}  href="#" text="Corrigir Valor" isDark={props.isDark}/>
       </li>
       <li className="nav-item">
-        <NormalLink href="#" text="Sobre" />
+        <NormalLink active={props.activeTab == "Sobre"} onChangeTab={props.onChangeTab}  href="#" text="Sobre" />
       </li>
     </>
   );
@@ -97,14 +111,14 @@ function NavBarItems(props) {
 
 function NormalLink(props) {
   return (
-    <a className={"nav-link"} href={props.href}>{props.text}</a>
+    <a onClick={props.onChangeTab} className={`nav-link ${props.active ? "active" : null}`} href={props.href}>{props.text}</a>
   );
 }
 
 function PopoverLink(props) {
   return (
     <PopoverContent title="Índice atual da Poupança" content={props.indice} position="bottom" isDark={props.isDark}>
-      <a className="nav-link" href={props.href}>{props.text}</a>
+      <a onClick={props.onChangeTab} className={`nav-link ${props.active ? "active" : null}`} href={props.href}>{props.text}</a>
     </PopoverContent>
   );
 }
@@ -116,7 +130,7 @@ function ModalLink(props) {
 
   return (
     <ModalContent modalShow={modalShow} setModalShow={setModalShow} title={titleModal} isDark={props.isDark}>
-      <a className="nav-link" href={props.href} onClick={() => setModalShow(true)}>{props.text}</a>
+      <a className={`nav-link ${props.active ? "active" : null}`} href={props.href} onClick={(e) => {setModalShow(true); props.onChangeTab(e)}}>{props.text}</a>
     </ModalContent>
   );
 }

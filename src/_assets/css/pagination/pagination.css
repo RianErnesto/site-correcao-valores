@@ -12,5 +12,63 @@
     --bs-pagination-active-border-color: rgb(0, 83, 0);
 }
 
-li.active {
+
+
+
+.pagination-light, .pagination-dark {
+    justify-content: center;
+    margin: 15px auto;
+    display: flex;
+    list-style: none;
+    outline: none;
+}
+
+.pagination-light> .active> a, .pagination-dark > .active > a {
+    color: white;
+}
+
+.pagination-light > li > a, .pagination-dark > li > a {
+    border: 1px solid;
+    padding: 5px 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+.pagination-dark > li > a {
+    background-color: #1b1b1b;
+    border-color: black;
+}
+
+.pagination-light > li > a {
+    border-color: rgb(151, 151, 151);
+}
+
+.pagination-light > li > a:hover, .pagination-dark > li > a:hover {
+    background-color: rgb(61, 120, 61);
+    color: white !important;
+}
+
+.pagination-light>.active>a, .pagination-light>.active>span, .pagination-light>.active>a:hover, .pagination-light>.active>span:hover, .pagination-light>.active>a:focus, .pagination-light>.active>span:focus,
+.pagination-dark>.active>a, .pagination-dark>.active>span, .pagination-dark>.active>a:hover, .pagination-dark>.active>span:hover, .pagination-dark>.active>a:focus, .pagination-dark>.active>span:focus {
+    background-color: rgb(61, 120, 61);
+    border-color: rgb(0, 83, 0);
+    outline: none;
+}
+
+.pagination-light > li > a, .pagination-light > li, 
+.pagination-dark > li > a, .pagination-dark > li {
+    text-decoration: none;
+}
+
+.pagination-light > li > a, .pagination-light > li {
+    color: black;
+}
+
+.pagination-dark > li > a, .pagination-dark > li {
+    color: white;
+}
+
+.pagination-light>li:first-child>a, .pagination-light>li:first-child>span, .pagination-light>li:last-child>a, .pagination-light>li:last-child>span,
+.pagination-dark>li:first-child>a, .pagination-dark>li:first-child>span, .pagination-dark>li:last-child>a, .pagination-dark>li:last-child>span {
+    border-radius: unset
 }

@@ -1,10 +1,11 @@
 import React from "react";
 import NavBar from "./components/navbar/navbar";
 import Table from "./components/table/table";
+import AlertContent from "./components/alert/alert";
 
 function MainTreino() {
   const [isDark, setIsDark] = React.useState(true);
-  const [link, setLink] = React.useState("TodosIndices");
+  const [link, setLink] = React.useState("Tabela Índices da Poupança");
 
   document.querySelector("body").style.backgroundColor = isDark ? "#272727" : "#fff";
 
@@ -16,32 +17,74 @@ function MainTreino() {
     setLink(childData);
   }
 
+  function activeTab() {
+    switch (link) {
+      case "Importar Planilha":
+        return null;
+      case "Tabela Índices da Poupança":
+        return <Table isDark={isDark} />;
+      case "Sobre":
+        return null;
+    }
+  }
+
   return (
     <div>
-      <NavBar parentCallback={changeDark} />
-      <Table isDark={isDark} />
+      <NavBar activeTab={link} setActiveTab={changeLink} parentCallback={changeDark} />
+      {activeTab()}
     </div>
   );
 }
 
 export function CorrigirValor() {
+  let data = new Date();
+  let ano = data.getFullYear();
+  let mes = data.getMonth() + 1 < 10 ? "0" + (data.getMonth() + 1) : data.getMonth() + 1;
+  let dia = data.getDate() < 10 ? "0" + data.getDate() : data.getDate();
+
   const [regraCorrecao, setRegraCorrecao] = React.useState("");
+  const [dataInicio, setDataInicio] = React.useState(Date("1991-02-01T00:00:00"));
+  const [dataFim, setDataFim] = React.useState(`${ano}-${mes}-${dia}`);
+  const [valor, setValor] = React.useState(0);
+
+  const [showError, setShowError] = React.useState(false);
+
+  function setShowFalse(show) {
+    setShowError(show);
+  }
 
   function changeRegraCorrecao(e) {
     setRegraCorrecao(e.target.name);
     localStorage.setItem("regraCorrecao", e.target.name);
   }
 
+  function datesChanged(e) {
+    switch (e.target.name) {
+      case "dataInicio":
+        setDataInicio(e.target.value);
+        localStorage.setItem("dataInicio", e.target.value);
+        break;
+      case "dataFim":
+        setDataFim(e.target.value);
+        localStorage.setItem("dataFim", e.target.value);
+        break;
+        
+    let dataInicio = new Date(e.target.value + "T00:00:00");
+    let dataFim = new Date(e.target.value + "T00:00:00");
+    console.log(data);
+    console.log(e.target.name)
+  }
+
   return (
     <form>
       <div>
         <label htmlFor="exampleInputEmail1" className="form-label">Data Inicial (DD/MM/AAAA)</label>
-        <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+        <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="dataInicio" onChange={datesChanged} value="1991-02-01"/>
         <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
       </div>
       <div>
         <label htmlFor="exampleInputEmail2" className="form-label">Data Final (DD/MM/AAAA)</label>
-        <input type="date" className="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" />
+        <input type="date" className="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="dataFim" onChange={datesChanged} value={dataFim}/>
         <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
       </div>
       <div>
@@ -62,6 +105,7 @@ export function CorrigirValor() {
           Antiga <em style={{fontSize: "0.8em"}}>(Depósitos até 03/05/2012)</em>
         </label>
       </div>
+      <AlertContent show={showError} setShowFalse={setShowFalse}/>
       <button type="submit" className="btn btn-success">Calcular</button>
     </form>
   );

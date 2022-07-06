@@ -1,63 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
 import { apiFrom2012, apiTill2012 } from "../../../../services/api";
 import SpinnerContent from "../spinner/spinner";
-import PaginationContent from "../pagination/pagination";
+import ReactPaginate from "react-paginate";
+import '../../../../_assets/css/pagination/pagination.css';
 
 function Table(props) {
-    const [dataTable, setDataTable] = React.useState([]);
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const [currentData, setCurrentData] = React.useState([]);
     const [spinner, setSpinner] = React.useState(false);
-    const [maxPages, setMaxPages] = React.useState(0);
-    const [active, setActive] = React.useState(1);
+    const [data, setData] = useState([]);
+    const [perPage, setPerPage] = useState(10);
+    const [offset, setOffset] = localStorage.getItem('currentPage') ? useState(Number(localStorage.getItem('currentPage')) * perPage) : useState(0);
+    const [currentPage, setCurrentPage] = localStorage.getItem('currentPage') ? useState(Number(localStorage.getItem('currentPage'))) : useState(0);
+    const [pageCount, setPageCount] = React.useState(0);
+    const [postData, setPostData] = React.useState([]);
+
+    React.useEffect(() => {
+        let mounted = true;
+        upload();
+
+        return () => {
+            mounted = false;
+        }
+    }, []);
 
     function upload() {
         setSpinner(true);
 
         apiTill2012.get('/').then(response => {
-            setDataTable(response.data);
-        }
-        ).catch(error => {
-            setDataTable([]);
-            console.log(error);
-        }
-        ).finally(() => {
-            console.log('Finalizado');
-        }
-        )
 
-        apiFrom2012.get('/').then(response => {
-            setSpinner(false);
-            setDataTable(dataTable.concat(response.data));
-            setMaxPages(Math.ceil(dataTable.length / quantityPerPage));
-            setCurrentData(response.data.slice((currentPage - 1) * quantityPerPage, (currentPage - 1) * quantityPerPage + quantityPerPage));
+            apiFrom2012.get('/').then(res => {
+                setSpinner(false);
+                const data = response.data.concat(res.data);
+                setData(data)
+                const slice = data.slice(offset, offset + perPage);
+                const postData = slice.map((item, index) => <React.Fragment>
+                    <tr key={index}>
+                        <td>{item.data}</td>
+                        <td>{item.datafim}</td>
+                        <td>{item.valor}</td>
+                    </tr>
+                </React.Fragment>
+                );
+
+                setPageCount(Math.ceil(data.length / perPage));
+                setPostData(postData);
+            }
+            ).catch(error => {
+                setData([]);
+                console.log(error);
+            }
+            );
         }
         ).catch(error => {
-            setDataTable([]);
+            setData([]);
             console.log(error);
-        }
-        ).finally(() => {
-            console.log('Finalizado');
         }
         );
     }
 
-    window.addEventListener("load", upload);
+    function handlePageClick(e) {
+        const selectedPage = e.selected;
+        const offset = selectedPage * perPage;
+        localStorage.setItem('currentPage', selectedPage);
 
-    const quantityPerPage = 10;
+        setCurrentPage(selectedPage);
+        setOffset(offset);
 
-    function nextPage() {
-        if (currentPage < Math.ceil(dataTable.length / quantityPerPage)) {
-            setCurrentData(dataTable.slice((currentPage) * quantityPerPage, (currentPage) * quantityPerPage + quantityPerPage));
-            setCurrentPage(currentPage + 1);
-        }
-    }
+        const slice = data.slice(offset, offset + perPage);
+        const postData = slice.map((item, index) => <React.Fragment>
+            <tr key={index}>
+                <td>{item.data}</td>
+                <td>{item.datafim}</td>
+                <td>{item.valor}</td>
+            </tr>
+        </React.Fragment>
+        );
 
-    function previousPage() {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-            setCurrentData(dataTable.slice((currentPage - 2) * quantityPerPage, (currentPage - 2) * quantityPerPage + quantityPerPage));
-        }
+        setPostData(postData);
     }
 
     const headersTable = [
@@ -70,25 +88,35 @@ function Table(props) {
         <>
 
             {spinner ? <SpinnerContent /> :
-                <table className={`table table-${props.isDark ? "dark border-light" : "light border-dark"} table-striped border-top `}>
-                    <thead>
-                        <tr>
-                            {headersTable.map((header, index) => (
-                                <th scope="col" key={index}>{header}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentData.map((row, index) => (
-                            <tr key={index}>
-                                <td>{row.data}</td>
-                                <td>{row.datafim}</td>
-                                <td>{row.valor}</td>
+                <>
+                    <table className={`table table-${props.isDark ? "dark border-dark" : "light border-light"} table-striped border-top `}>
+                        <thead>
+                            <tr>
+                                {headersTable.map((header, index) => (
+                                    <th scope="col" key={index}>{header}</th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                    <PaginationContent active={active} isDark={props.isDark} previousPage={previousPage} nextPage={nextPage} setCurrentPage={setCurrentPage} currentPage={currentPage} maxPages={maxPages}/>
-                </table>
+                        </thead>
+                        <tbody>
+                            {postData}
+                        </tbody>
+                    </table>
+                    <ReactPaginate
+                        previousLabel="Anterior"
+                        nextLabel="Próximo"
+                        breakLabel="..."
+                        breakClassName="break-me"
+                        pageCount={pageCount}
+                        marginPagesDisplayed={3}
+                        pageRangeDisplayed={3}
+                        onPageChange={handlePageClick}
+                        containerClassName={`pagination-${props.isDark ? "dark" : "light"}`}
+                        activeClassName="active"
+                        forcePage={currentPage}
+                        activeLinkClassName="active"
+                        disabledClassName="disabled"
+                    />
+                </>
             }
         </>
 
