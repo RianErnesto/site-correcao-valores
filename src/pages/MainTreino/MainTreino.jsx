@@ -59,20 +59,22 @@ export function CorrigirValor() {
   }
 
   function datesChanged(e) {
+    
     switch (e.target.name) {
       case "dataInicio":
+        let dataInicio = new Date(e.target.value + "T00:00:00");
+        let dataFim = new Date(dataFim + "T00:00:00");
         setDataInicio(e.target.value);
-        localStorage.setItem("dataInicio", e.target.value);
+        // localStorage.setItem("dataInicio", e.target.value);
         break;
       case "dataFim":
+        let dataFim = new Date(e.target.value + "T00:00:00");
+        let dataInicio = new Date(dataInicio + "T00:00:00");
         setDataFim(e.target.value);
-        localStorage.setItem("dataFim", e.target.value);
+        // localStorage.setItem("dataFim", e.target.value);
         break;
-        
-    let dataInicio = new Date(e.target.value + "T00:00:00");
-    let dataFim = new Date(e.target.value + "T00:00:00");
-    console.log(data);
-    console.log(e.target.name)
+    }
+
   }
 
   return (
