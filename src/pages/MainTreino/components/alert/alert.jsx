@@ -10,17 +10,15 @@ function AlertContent(props) {
 
     return (
         <>
-            <Alert show={props.show} variant="success">
-                <Alert.Heading>How's it going?!</Alert.Heading>
+            <Alert show={props.show} variant="danger">
+                <Alert.Heading>{props.title}</Alert.Heading>
                 <p>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget
-                    lacinia odio sem nec elit. Cras mattis consectetur purus sit amet
-                    fermentum.
+                    {props.message}
                 </p>
                 <hr />
                 <div className="d-flex justify-content-end">
-                    <Button onClick={() => setShowFalse(false)} variant="outline-success">
-                        Close me y'all!
+                    <Button onClick={() => setShowFalse(false)} variant="outline-danger">
+                        Fechar
                     </Button>
                 </div>
             </Alert>

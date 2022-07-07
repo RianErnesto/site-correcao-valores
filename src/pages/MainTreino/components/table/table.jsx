@@ -7,7 +7,7 @@ import '../../../../_assets/css/pagination/pagination.css';
 function Table(props) {
     const [spinner, setSpinner] = React.useState(false);
     const [data, setData] = useState([]);
-    const [perPage, setPerPage] = useState(10);
+    const [perPage, setPerPage] = useState(15);
     const [offset, setOffset] = localStorage.getItem('currentPage') ? useState(Number(localStorage.getItem('currentPage')) * perPage) : useState(0);
     const [currentPage, setCurrentPage] = localStorage.getItem('currentPage') ? useState(Number(localStorage.getItem('currentPage'))) : useState(0);
     const [pageCount, setPageCount] = React.useState(0);

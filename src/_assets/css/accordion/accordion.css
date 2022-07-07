@@ -1,0 +1,16 @@
+.custom-accordion-dark {
+    --bs-accordion-bg: #2b2b2b;
+    --bs-accordion-color: white;
+    --bs-accordion-btn-color: white;
+    --bs-accordion-active-bg: #272727;
+    --bs-accordion-active-color: white;
+    --bs-accordion-border-color: #1d1d1d;
+}
+
+.custom-accordion-light {
+    --bs-accordion-bg: white;
+    --bs-accordion-color: black;
+    --bs-accordion-btn-color: black;
+    --bs-accordion-active-bg: white;
+    --bs-accordion-active-color: black;
+}

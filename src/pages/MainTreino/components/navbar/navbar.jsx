@@ -5,15 +5,11 @@ import "../../../../_assets/css/slider/slider.css";
 import { apiFrom2012 } from "../../../../services/api";
 
 function NavBar(props) {
-  const [isDark, setIsDark] = React.useState(true);
-
   function onTrigger() {
-    setIsDark(!isDark);
-    props.parentCallback(!isDark);
+    props.parentCallback(!props.isDark);
   }
 
   function onChangeTab(e) {
-    console.log(e.currentTarget.textContent);
     switch(e.currentTarget.textContent) {
       case "Importar Planilha":
         props.setActiveTab(e.currentTarget.textContent);
@@ -31,7 +27,7 @@ function NavBar(props) {
 
   return (
     <nav
-      className={`navbar navbar-expand-lg bg-${isDark ? "dark navbar-dark" : "light"
+      className={`navbar navbar-expand-lg bg-${props.isDark ? "dark navbar-dark" : "light"
         }`}
     >
       <div className="container-fluid">
@@ -54,9 +50,9 @@ function NavBar(props) {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <NavBarItems activeTab={props.activeTab} onChangeTab={onChangeTab} isDark={isDark} />
+            <NavBarItems activeTab={props.activeTab} onChangeTab={onChangeTab} isDark={props.isDark} />
           </ul>
-          <SliderDarkMode isDark={isDark} setIsDark={onTrigger} />
+          <SliderDarkMode isDark={props.isDark} setIsDark={onTrigger} />
           <form className="d-flex" role="search">
             <input
               className="form-control me-2"

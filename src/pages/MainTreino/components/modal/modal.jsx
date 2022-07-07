@@ -19,7 +19,7 @@ function MyVerticallyCenteredModal(props) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <CorrigirValor />
+                <CorrigirValor isDark={props.isDark}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button className="btn btn-success" onClick={props.onHide}>Fechar</Button>
