@@ -46,6 +46,26 @@ function MainTreino() {
   );
 }
 
+export function ShowValor(props) {
+  return (
+    <form>
+      <div>
+        <label htmlFor="exampleInputEmail1" className="form-label">Texto Teste</label>
+        <input type="text" readOnly className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="dataInicio" value={"Texto Teste"} />
+      </div>
+      <div>
+        <label htmlFor="exampleInputEmail2" className="form-label">Texto Teste 2</label>
+        <input type="text" readOnly className="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="dataFim" value={"Texto Teste 2"} />
+      </div>
+      <div>
+        <label htmlFor="exampleInputEmail3" className="form-label">Texto Teste 3</label>
+        <input type="text" readOnly className="form-control" id="exampleInputEmail3" aria-describedby="emailHelp" />
+      </div>
+      <button type="submit" className="btn btn-success" onClick={() => props.setCurrentModal()}>Voltar</button>
+    </form>
+  );
+}
+
 export function CorrigirValor(props) {
   let data = new Date();
   let ano = data.getFullYear();
@@ -86,6 +106,7 @@ export function CorrigirValor(props) {
       return;
     }
 
+    props.setCurrentModal();
     localStorage.removeItem("dataInicio");
     localStorage.removeItem("dataFim");
     localStorage.removeItem("valor");
@@ -134,7 +155,7 @@ export function CorrigirValor(props) {
       </div>
       <div>
         <label htmlFor="exampleInputEmail3" className="form-label">Valor a ser Corrigido</label>
-        <input type="email" className="form-control" id="exampleInputEmail3" aria-describedby="emailHelp" />
+        <input type="number" step="10" className="form-control" id="exampleInputEmail3" aria-describedby="emailHelp" />
       </div>
       <AccordionContent isDark={props.isDark} />
       <AlertContent show={showError} setShowFalse={setShowFalse} title={errorTitle} message={errorMessage} />
